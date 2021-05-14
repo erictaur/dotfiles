@@ -27,6 +27,8 @@ Plug 'luochen1990/rainbow'
 Plug 'vhda/verilog_systemverilog.vim'
 Plug 'https://github.com/tpope/vim-eunuch'
 Plug 'preservim/nerdtree'
+Plug 'godlygeek/tabular'
+Plug 'Yggdroot/indentLine'
 call plug#end()
 
 let g:rainbow_active = 1
