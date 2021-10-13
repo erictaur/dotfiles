@@ -1,20 +1,22 @@
 # Start fresh with the following:
 # gcloud compute instances stop instance-2
 # gcloud compute instances delete instance-2
-# gcloud compute instances create instance-2 \
-# --project=catx-ext-umich \
-# --zone=us-central1-a \
-# --machine-type=e2-standard-32 \
-# --network-interface=network-tier=PREMIUM,subnet=default \
-# --maintenance-policy=MIGRATE \
-# --service-account=terraform-runner@catx-ext-umich.iam.gserviceaccount.com \
-# --scopes=https://www.googleapis.com/auth/cloud-platform \
-# --create-disk=auto-delete=yes,boot=yes,device-name=instance-2,\
-# image=projects/debian-cloud/global/images/debian-10-buster-v20210916,\
-# mode=rw,size=256,type=projects/catx-ext-umich/zones/us-central1-a/diskTypes/pd-balanced \
-# --no-shielded-secure-boot \
-# --shielded-vtpm \
-# --shielded-integrity-monitoring \
+# gcloud compute instances create instance-2 
+# --project=catx-ext-umich 
+# --zone=us-central1-a 
+# --machine-type=e2-standard-32 
+# --network-interface=network-tier=PREMIUM,subnet=default 
+# --can-ip-forward 
+# --maintenance-policy=MIGRATE 
+# --service-account=terraform-runner@catx-ext-umich.iam.gserviceaccount.com 
+# --scopes=https://www.googleapis.com/auth/cloud-platform 
+# --tags=vnc-server 
+# --create-disk=auto-delete=yes,boot=yes,device-name=instance-2,
+# image=projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20210927,
+# mode=rw,size=512,type=projects/catx-ext-umich/zones/us-central1-a/diskTypes/pd-balanced 
+# --no-shielded-secure-boot 
+# --shielded-vtpm 
+# --shielded-integrity-monitoring 
 # --reservation-affinity=any
 
 # Delete previous image archive in bucket
