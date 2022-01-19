@@ -1,8 +1,11 @@
 # dotfiles
 
 This is the repo (backup) of my .files for the following:
-* vim (.vimrc)
-* bash (.bashrc)
+* vim (personal/.vimrc)
+* tmux (personal/.tmux.conf)
+* SSH config files (personal/config)
+* bash (vlsipool/.bashrc)
+* Other workspace files (in gcp/ and vlsipool/)
 
 ## Useful Links/Resources
 

@@ -110,6 +110,8 @@ fi
 module use /afs/eecs.umich.edu/cadre/software/modules
 module use /afs/eecs.umich.edu/cadre/software/openroad/modules
 
+# Remove all loads
+module purge
 
 # Load VS Code
 module load vscode-el7

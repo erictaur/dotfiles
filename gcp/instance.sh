@@ -30,12 +30,16 @@ curl https://packages.cloud.google.com/apt/doc/apt-key.gpg |
 
 sudo apt-get update && sudo apt-get install google-cloud-sdk -y
 
+# In order to track build progress
+sudo -i -u khtaur bash
+
+cd /home/khtaur
 # Rebuild image
 git clone --recursive \
     https://github.com/antmicro/github-actions-runner-scalerunner.git && \
         cd github-actions-runner-scalerunner/buildroot && \
         make BR2_EXTERNAL=../overlay/ scalenode_gcp_defconfig && \
-        make
+        make -j60
 
 export PROJECT=catx-ext-umich && \
     export BUCKET=$PROJECT-worker-bucket
@@ -44,9 +48,3 @@ export PROJECT=catx-ext-umich && \
 cd ../ && \
     ./make_gcp_image.sh && \
     ./upload_gcp_image.sh $PROJECT $BUCKET
-
-# ssh into coordinator instance to setup runner and run config
-cd ~/runner
-export name=$(gcloud compute instances list | grep gha | awk '{print $1}') && \
-    export zone=$(gcloud compute instances list | grep gha | awk '{print $2}') && \
-    cat coor.sh | gcloud compute ssh $name --zone=$zone
