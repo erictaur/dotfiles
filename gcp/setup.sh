@@ -15,8 +15,8 @@ if gcloud compute instances describe instance-2 ; then
         --service-account=terraform-runner@catx-ext-umich.iam.gserviceaccount.com \
         --scopes=https://www.googleapis.com/auth/cloud-platform \
         --tags=vnc-server \
-        --create-disk=auto-delete=yes,boot=yes,device-name=instance-2,\
-        image=projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20210927,\
+        --create-disk=auto-delete=yes,boot=yes,device-name=instance-2, \
+        image=projects/ubuntu-os-cloud/global/images/ubuntu-2004-focal-v20210927, \
         mode=rw,size=512,type=projects/catx-ext-umich/zones/us-central1-a/diskTypes/pd-balanced \
         --no-shielded-secure-boot \
         --shielded-vtpm \
