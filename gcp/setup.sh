@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# Add --metadata-from-file=startup-script=instance.sh
+# to include a startup script
+
 # Start fresh with the following:
 if gcloud compute instances describe instance-2 ; then
     echo "Instance found! Stopping and Deleting instance..."
@@ -19,8 +22,7 @@ if gcloud compute instances describe instance-2 ; then
     --no-shielded-secure-boot \
     --shielded-vtpm \
     --shielded-integrity-monitoring \
-    --reservation-affinity=any \
-    --metadata-from-file=startup-script=instance.sh
+    --reservation-affinity=any
     echo "Instance deleted and created!"
     # Delete previous image archive in bucket
     # TODO: How to delete uploaded image (Not just in bucket archive)
@@ -42,8 +44,7 @@ else
     --no-shielded-secure-boot \
     --shielded-vtpm \
     --shielded-integrity-monitoring \
-    --reservation-affinity=any \
-    --metadata-from-file=startup-script=instance.sh
+    --reservation-affinity=any
     echo "Instance created!"
 fi
 

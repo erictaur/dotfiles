@@ -3,9 +3,10 @@
 # Setup prerequisites
 sudo apt-get update
 sudo apt install build-essential -y
-sudo apt install git wget unzip rsync bc \
-    libelf-dev autotools-dev automake \
-    gcc-multilib texinfo dosfstools mtools -y
+sudo apt-get -qqy install file gcc-multilib mtools \
+    automake autoconf build-essential bison flex \
+    wget patch bc unzip make rsync binutils cpio git \
+    libelf-dev python3 golang fdisk dosfstools texinfo 
 
 # Install Go for compiling BzImage
 cd ~
@@ -39,7 +40,7 @@ git clone --recursive \
     https://github.com/antmicro/github-actions-runner-scalerunner.git && \
         cd github-actions-runner-scalerunner/buildroot && \
         make BR2_EXTERNAL=../overlay/ scalenode_gcp_defconfig && \
-        make -j60
+        ( FORCE_UNSAFE_CONFIGURE=1 make -j$(nproc) 2>&1 | tail -10000 ) || FORCE_UNSAFE_CONFIGURE=1 make
 
 export PROJECT=catx-ext-umich && \
     export BUCKET=$PROJECT-worker-bucket
