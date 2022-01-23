@@ -9,10 +9,10 @@ sudo apt-get -qqy install file gcc-multilib mtools \
     libelf-dev python3 golang fdisk dosfstools texinfo 
 
 # Install Go for compiling BzImage
-cd ~
-wget https://golang.org/dl/go1.16.5.linux-amd64.tar.gz && \
-    sudo tar -xzf go1.16.5.linux-amd64.tar.gz -C /usr/local/ && \
-    export PATH=$PATH:/usr/local/go/bin
+# cd ~
+# wget https://golang.org/dl/go1.16.5.linux-amd64.tar.gz && \
+#     sudo tar -xzf go1.16.5.linux-amd64.tar.gz -C /usr/local/ && \
+#     export PATH=$PATH:/usr/local/go/bin
 
 # Install Terraform
 sudo apt-get install software-properties-common -y
@@ -31,12 +31,25 @@ curl https://packages.cloud.google.com/apt/doc/apt-key.gpg |
 
 sudo apt-get update && sudo apt-get install google-cloud-sdk -y
 
-# In order to track build progress
-sudo -i -u khtaur bash
+# Remove all created resources by Terraform
+yes | gsutil rm gs://catx-ext-umich-worker-bucket/scalenode-62142bf.tar.gz
+yes | gcloud compute images delete scalenode-62142bf
+yes | gcloud compute instances delete gha-runner-coordinator --zone=us-west1-a
+yes | gcloud compute firewall-rules delete gha-runner-net---ssh-from-outside \
+        gha-runner-net---deny-access-coordinator \
+        gha-runner-net---access-runners \
+        gha-runner-net---allow-coordinator-services
+yes | gcloud compute routers delete gha-runner-net---cloud-router \
+        --project=catx-ext-umich \
+        --region=us-west1
+yes | gcloud compute networks subnets delete gha-runner-net --region=us-west1
+yes | gcloud compute networks delete gha-runner-net
+yes | gcloud iam service-accounts delete gha-runner-coordinator-sa@catx-ext-umich.iam.gserviceaccount.com
+yes | gcloud compute disks delete gha-runner-coordinator---boot-disk --zone=us-west1-a
 
-cd /home/khtaur
 # Rebuild image
-git clone --recursive \
+cd /tmp && \
+    git clone --recursive \
     https://github.com/antmicro/github-actions-runner-scalerunner.git && \
         cd github-actions-runner-scalerunner/buildroot && \
         make BR2_EXTERNAL=../overlay/ scalenode_gcp_defconfig && \
@@ -49,3 +62,11 @@ export PROJECT=catx-ext-umich && \
 cd ../ && \
     ./make_gcp_image.sh && \
     ./upload_gcp_image.sh $PROJECT $BUCKET
+
+# Run Terraform with plan file
+cd /tmp && \
+    git clone https://github.com/antmicro/github-actions-runner-terraform.git && \
+    cd github-actions-runner-terraform
+
+echo 'catx-ext-umich' | terraform plan && \
+    echo 'catx-ext-umich' | terraform apply -auto-approve

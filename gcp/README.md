@@ -79,9 +79,15 @@ Second Error:
 
 Errors are resolved by manually removing the resources using the commands as shown below. The existing resources are not detected by Terraform for some reason.
 ```
+yes | gcloud compute instances delete gha-runner-coordinator --zone=us-west1-a
+yes | gcloud compute firewall-rules delete gha-runner-net---ssh-from-outside \
+  gha-runner-net---deny-access-coordinator \
+  gha-runner-net---access-runners \
+  gha-runner-net---allow-coordinator-services
 yes | gcloud compute routers delete gha-runner-net---cloud-router \
         --project=catx-ext-umich \
         --region=us-west1
+yes | gcloud compute networks subnets delete gha-runner-net --region=us-west1
 yes | gcloud compute networks delete gha-runner-net
 yes | gcloud iam service-accounts delete gha-runner-coordinator-sa@catx-ext-umich.iam.gserviceaccount.com
 yes | gcloud compute disks delete gha-runner-coordinator---boot-disk --zone=us-west1-a
