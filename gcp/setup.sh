@@ -22,8 +22,7 @@ if gcloud compute instances describe instance-2 ; then
     --no-shielded-secure-boot \
     --shielded-vtpm \
     --shielded-integrity-monitoring \
-    --reservation-affinity=any \
-    --metadata-from-file=startup-script=instance.sh
+    --reservation-affinity=any
     echo "Instance deleted and created!"
 else
     echo "Instance not found! Creating instance directly!"
@@ -41,8 +40,7 @@ else
     --no-shielded-secure-boot \
     --shielded-vtpm \
     --shielded-integrity-monitoring \
-    --reservation-affinity=any \
-    --metadata-from-file=startup-script=instance.sh
+    --reservation-affinity=any
     echo "Instance created!"
 fi
 
